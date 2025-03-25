@@ -2,15 +2,19 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/aurora1530/go-webauthn-study/backend/internal"
 	"github.com/joho/godotenv"
 )
 
 func init(){
-	err := godotenv.Load("../.env")
-	if err != nil {
-		panic(err)
+	prod := os.Getenv("PRODUCTION")
+	if prod != "true" {
+		err := godotenv.Load("../.env")
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
