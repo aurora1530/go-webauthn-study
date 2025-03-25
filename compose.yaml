@@ -9,6 +9,10 @@ services:
       context: ./backend
     depends_on:
       - db
+    environment:
+      - PRODUCTION=true
+    env_file:
+      - ".env"
   db:
     build:
       context: ./db
