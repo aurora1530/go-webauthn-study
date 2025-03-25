@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      - db
+  db:
+    build:
+      context: ./db
+    command: -c log_statement=all
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?-PASSWORD for postgres is required}
+      - POSTGRES_USER=${POSTGRES_USER?-USER for postgres is required}
+      - POSTGRES_DB=${POSTGRES_DB?-DB for postgres is required}
+  nginx:
+    image: nginx:1.27.4
+    ports:
+      - "80:80"
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  db-data:
